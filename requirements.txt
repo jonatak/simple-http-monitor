@@ -1,0 +1,4 @@
+click==7.0
+aiofiles==0.4.0
+tonyg-rfc3339==0.1
+colorama==0.4.3
