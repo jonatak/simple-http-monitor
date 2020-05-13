@@ -17,8 +17,7 @@ setup(
     long_description=readme,
     long_description_content_type='text/markdown',
     author='Jonathan Billaud',
-    author_email='jonathan.billaud@gmail.com',
-    url='https://github.com/jonatak/simple-http-monitor',  # which does not actually exists
+    url='https://github.com/jonatak/simple-http-monitor',
     install_requires=requirements,
     packages=find_packages(exclude=("tests",)),
     entry_points={
