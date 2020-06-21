@@ -143,13 +143,13 @@ class Stats:
             while line:
                 # skip message which isn't generated during the last 10 seconds
                 if line.datetime < start_stats_date:
-                    line = self._get_sync(self._log_queue)
+                    line = self._get_sync()
                     continue
                 if now >= line.datetime >= start_stats_date:
                     total_requests_stats += 1
                     section = line.uri.split('/')[1]
                     hits_sections_counter[f'/{section}'] += 1
-                line = self._get_sync(self._log_queue)
+                line = self._get_sync()
 
         most_common_section, hits_count = (
             hits_sections_counter.most_common(1)[0]
