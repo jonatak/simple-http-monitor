@@ -28,10 +28,10 @@ logger = logging.getLogger(__name__)
 # logger isn't configured and will not display anything in stdout.
 
 
-async def _shutdown(signal, loop):
+async def _shutdown(sig, loop):
     """ Cleanup tasks tied to the service's shutdown. """
     print('Received exit signal %(signal)s...', {
-        'signal': signal.name
+        'signal': sig.name
     })
     tasks = [
         t for t in asyncio.all_tasks()
@@ -54,7 +54,7 @@ async def _shutdown(signal, loop):
 @click.option('--request-threshold', default=10,
               help='Maximum number of request per second threshold expected')
 def main(input_file: str, request_threshold: int):
-
+    """Starting point of this application."""
     # message queue which will be displayed to the user.
     message_queue = asyncio.Queue()
 
@@ -70,12 +70,12 @@ def main(input_file: str, request_threshold: int):
     loop = asyncio.get_event_loop()
 
     # capture SIGTERM and SIGINT signal for graceful shutdown
-    signals = (signal.SIGTERM, signal.SIGINT)
+    sigs = (signal.SIGTERM, signal.SIGINT)
 
     # add signal handler
-    for s in signals:
+    for sig in sigs:
         loop.add_signal_handler(
-            s, lambda s=s: asyncio.create_task(_shutdown(s, loop))
+            sig, lambda sig: asyncio.create_task(_shutdown(sig, loop))
         )
 
     # here is the main execution loop, where we create

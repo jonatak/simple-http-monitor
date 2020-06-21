@@ -28,9 +28,9 @@ async def process_file_task(message_queue: asyncio.Queue,
         This function will wait for new log line in the `input_file`
         and store them.
     """
-    async with aiofiles.open(input_file, 'r') as f:
+    async with aiofiles.open(input_file, 'r') as fd_log:
         while True:
-            line = await f.readline()
+            line = await fd_log.readline()
             line = line.strip()
             if line:
                 try:
@@ -50,9 +50,11 @@ async def show_messages_task(message_queue: asyncio.Queue):
 async def stats_task(task_interval: int, message_queue: asyncio.Queue,
                      log_queue: asyncio.LifoQueue, lock: asyncio.Lock,
                      request_threshold: int):
-    # this function exists to wrap the creation of the Stats object inside an
-    # async function,
-    # and to schedule the task every `task_interval`.
+    """
+        this function exists to wrap the creation of the Stats object inside an
+        async function,
+        and to schedule the task every `task_interval`.
+    """
     stats = Stats(message_queue, log_queue, lock, request_threshold)
     while True:
         # Wait for task_interval before processing
@@ -94,7 +96,7 @@ class Stats:
         self._current_issue = False
         self._past_stats = deque(maxlen=MAX_STATS_LIST_SIZE)
 
-    def _get_sync(self, queue: asyncio.LifoQueue):
+    def _get_sync(self):
         line = None
         try:
             line = self._log_queue.get_nowait()
@@ -128,7 +130,7 @@ class Stats:
             )
 
     async def _process_stats(self):
-        line = self._get_sync(self._log_queue)
+        line = self._get_sync()
 
         # get datetime with timezone offset
         now = rfc3339.now()
