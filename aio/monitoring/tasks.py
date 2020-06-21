@@ -37,8 +37,8 @@ async def process_file_task(message_queue: asyncio.Queue,
                     log_line = parse_common(line)
                     async with lock:
                         log_queue.put_nowait(log_line)
-                except ParserCommonException as e:
-                    await message_queue.put(str(e))
+                except ParserCommonException as exp:
+                    await message_queue.put(str(exp))
 
 
 async def show_messages_task(message_queue: asyncio.Queue):
