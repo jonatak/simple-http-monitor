@@ -85,7 +85,7 @@ async def test_alert():
 async def test_full_process():
     stats = get_stats_object()
 
-    for i in range(3000):
+    for _ in range(3000):
         stats._log_queue.put_nowait(
             LogLine(
                 host='127.0.0.1',
