@@ -33,4 +33,4 @@ def test_incorrect_log_line():
         ' "GET /report HTTP/1.0" 200'
     )
     with pytest.raises(ParserCommonException):
-        log_line = parse_common(line)
+        parse_common(line)
