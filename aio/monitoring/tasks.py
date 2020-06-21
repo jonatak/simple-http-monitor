@@ -11,7 +11,6 @@ This module contains all the task runned by simple-http-monitor:
 """
 import asyncio
 import datetime
-import dataclasses
 from collections import Counter, deque
 
 import aiofiles
