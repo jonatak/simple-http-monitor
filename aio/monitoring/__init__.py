@@ -38,7 +38,8 @@ async def _shutdown(signal, loop):
         if t is not asyncio.current_task()
     ]
 
-    [task.cancel() for task in tasks]
+    for task in tasks:
+        task.cancel()
 
     print('Cancelling %(task_number)s outstanding tasks', {
         'task_number': len(tasks)
